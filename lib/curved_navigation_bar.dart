@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:curved_navigation_bar/src/nav_custom_clipper.dart';
 import 'package:flutter/material.dart';
+
 import 'src/nav_button.dart';
 import 'src/nav_custom_painter.dart';
 
@@ -19,6 +20,8 @@ class CurvedNavigationBar extends StatefulWidget {
   final Duration animationDuration;
   final double height;
   final double? maxWidth;
+  final double radius;
+  final List<Color>? gradient;
 
   CurvedNavigationBar({
     Key? key,
@@ -33,6 +36,8 @@ class CurvedNavigationBar extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 600),
     this.height = 75.0,
     this.maxWidth,
+    this.radius = 0,
+    this.gradient,
   })  : letIndexChange = letIndexChange ?? ((_) => true),
         assert(items.isNotEmpty),
         assert(0 <= index && index < items.length),
@@ -44,8 +49,7 @@ class CurvedNavigationBar extends StatefulWidget {
   CurvedNavigationBarState createState() => CurvedNavigationBarState();
 }
 
-class CurvedNavigationBarState extends State<CurvedNavigationBar>
-    with SingleTickerProviderStateMixin {
+class CurvedNavigationBarState extends State<CurvedNavigationBar> with SingleTickerProviderStateMixin {
   late double _startingPos;
   late int _endingIndex;
   late double _pos;
@@ -71,8 +75,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
         if ((endingPos - _pos).abs() < (_startingPos - _pos).abs()) {
           _icon = widget.items[_endingIndex];
         }
-        _buttonHide =
-            (1 - ((middle - _pos) / (_startingPos - middle)).abs()).abs();
+        _buttonHide = (1 - ((middle - _pos) / (_startingPos - middle)).abs()).abs();
       });
     });
   }
@@ -105,12 +108,9 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
       height: widget.height,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final maxWidth = min(
-              constraints.maxWidth, widget.maxWidth ?? constraints.maxWidth);
+          final maxWidth = min(constraints.maxWidth, widget.maxWidth ?? constraints.maxWidth);
           return Align(
-            alignment: textDirection == TextDirection.ltr
-                ? Alignment.bottomLeft
-                : Alignment.bottomRight,
+            alignment: textDirection == TextDirection.ltr ? Alignment.bottomLeft : Alignment.bottomRight,
             child: Container(
               color: widget.backgroundColor,
               width: maxWidth,
@@ -124,12 +124,8 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                   children: <Widget>[
                     Positioned(
                       bottom: -40 - (75.0 - widget.height),
-                      left: textDirection == TextDirection.rtl
-                          ? null
-                          : _pos * maxWidth,
-                      right: textDirection == TextDirection.rtl
-                          ? _pos * maxWidth
-                          : null,
+                      left: textDirection == TextDirection.rtl ? null : _pos * maxWidth,
+                      right: textDirection == TextDirection.rtl ? _pos * maxWidth : null,
                       width: maxWidth / _length,
                       child: Center(
                         child: Transform.translate(
@@ -152,11 +148,30 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                       left: 0,
                       right: 0,
                       bottom: 0 - (75.0 - widget.height),
-                      child: CustomPaint(
-                        painter: NavCustomPainter(
-                            _pos, _length, widget.color, textDirection),
-                        child: Container(
-                          height: 75.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.15),
+                              blurRadius: 100,
+                              spreadRadius: 10,
+                              offset: const Offset(0, 0),
+                              // blurStyle: BlurStyle.outer,
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(widget.radius),
+                            topRight: Radius.circular(widget.radius),
+                          ),
+                          child: CustomPaint(
+                            painter: NavCustomPainter(_pos, _length, widget.color, textDirection),
+                            child: Container(
+                              height: 75.0,
+                            ),
+                          ),
                         ),
                       ),
                     ),
