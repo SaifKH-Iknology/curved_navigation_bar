@@ -34,14 +34,14 @@ class CurvedNavigationBar extends StatefulWidget {
     _LetIndexPage? letIndexChange,
     this.animationCurve = Curves.easeOut,
     this.animationDuration = const Duration(milliseconds: 600),
-    this.height = 75.0,
+    this.height = 90.0,
     this.maxWidth,
     this.radius = 0,
     this.gradient,
   })  : letIndexChange = letIndexChange ?? ((_) => true),
         assert(items.isNotEmpty),
         assert(0 <= index && index < items.length),
-        assert(0 <= height && height <= 75.0),
+        assert(0 <= height && height <= 90.0),
         assert(maxWidth == null || 0 <= maxWidth),
         super(key: key);
 
@@ -147,7 +147,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar> with SingleTic
                     Positioned(
                       left: 0,
                       right: 0,
-                      bottom: 0 - (75.0 - widget.height),
+                      bottom: 0 - (90.0 - widget.height),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
@@ -169,7 +169,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar> with SingleTic
                           child: CustomPaint(
                             painter: NavCustomPainter(_pos, _length, widget.color, textDirection),
                             child: Container(
-                              height: 75.0,
+                              height: 90.0,
                             ),
                           ),
                         ),
@@ -178,7 +178,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar> with SingleTic
                     Positioned(
                       left: 0,
                       right: 0,
-                      bottom: 0 - (75.0 - widget.height),
+                      bottom: 0 - (90.0 - widget.height),
                       child: SizedBox(
                           height: 100.0,
                           child: Row(
