@@ -101,6 +101,16 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar> with SingleTic
     super.dispose();
   }
 
+  final List<Color> centroGradient = <Color>[
+    const Color.fromRGBO(19, 113, 77, 1.0),
+    const Color.fromRGBO(131, 199, 95, 1.0)
+  ];
+
+  final List<Color> iktifaaGradient = <Color>[
+    const Color.fromRGBO(153, 217, 140, 1.0),
+    const Color.fromRGBO(22, 138, 173, 1.0)
+  ];
+
   @override
   Widget build(BuildContext context) {
     final textDirection = Directionality.of(context);
@@ -133,9 +143,17 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar> with SingleTic
                             0,
                             -(1 - _buttonHide) * 80,
                           ),
-                          child: Material(
-                            color: widget.buttonBackgroundColor ?? widget.color,
-                            type: MaterialType.circle,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: widget.buttonBackgroundColor ?? widget.color,
+                              gradient: LinearGradient(
+                                colors: widget.gradient ?? centroGradient,
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                            // type: MaterialType.circle,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: _icon,
